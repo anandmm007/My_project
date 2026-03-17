@@ -29,6 +29,70 @@ genai.configure(api_key=api_key)
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max
 
+# Enhanced session storage with automatic cleanup
+class SessionManager:
+    def __init__(self, cleanup_interval: int = 300):
+        self.sessions: Dict[str, dict] = {}
+        self.cleanup_interval = cleanup_interval
+        self.start_cleanup_thread()
+    
+    def start_cleanup_thread(self):
+        """Start background thread for session cleanup"""
+        def cleanup_expired_sessions():
+            while True:
+                try:
+                    current_time = datetime.now()
+                    expired_sessions = []
+                    
+                    for session_id, session_data in self.sessions.items():
+                        if current_time - session_data['last_activity'] > timedelta(hours=1):
+                            expired_sessions.append(session_id)
+                    
+                    for session_id in expired_sessions:
+                        del self.sessions[session_id]
+                        logger.info(f"Cleaned up expired session: {session_id}")
+                    
+                    time.sleep(self.cleanup_interval)
+                except Exception as e:
+                    logger.error(f"Error in session cleanup: {e}")
+                    time.sleep(self.cleanup_interval)
+        
+        cleanup_thread = threading.Thread(target=cleanup_expired_sessions, daemon=True)
+        cleanup_thread.start()
+    
+    def create_session(self, image_data: dict) -> str:
+        """Create a new session"""
+        session_id = str(uuid.uuid4())
+        self.sessions[session_id] = {
+            'image': image_data,
+            'history': [],
+            'created_at': datetime.now(),
+            'last_activity': datetime.now(),
+            'message_count': 0
+        }
+        logger.info(f"Created new session: {session_id}")
+        return session_id
+    
+    def get_session(self, session_id: str) -> Optional[dict]:
+        """Get session data"""
+        session = self.sessions.get(session_id)
+        if session:
+            session['last_activity'] = datetime.now()
+        return session
+    
+    def update_session_history(self, session_id: str, user_message: dict, model_response: dict):
+        """Update session history"""
+        if session_id in self.sessions:
+            self.sessions[session_id]['history'].extend([user_message, model_response])
+            self.sessions[session_id]['last_activity'] = datetime.now()
+            self.sessions[session_id]['message_count'] += 1
+    
+    def get_session_stats(self) -> dict:
+        """Get session statistics"""
+        return {
+            'active_sessions': len(self.sessions),
+            'total_messages': sum(s['message_count'] for s in self.sessions.values())
+        }
 
 
 # Initialize session manager
