@@ -24,3 +24,5 @@ if not api_key:
     raise ValueError("GOOGLE_API_KEY environment variable is required")
 
 genai.configure(api_key=api_key)
+
+app = Flask(__name__)
