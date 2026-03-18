@@ -19,3 +19,8 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 # Configure Gemini API
 api_key = "AIzaSyAj7QePSFe7l4dVBBcfbLD8cYXt-uc2bH0"
+if not api_key:
+    logger.error("GOOGLE_API_KEY environment variable not set")
+    raise ValueError("GOOGLE_API_KEY environment variable is required")
+
+genai.configure(api_key=api_key)
