@@ -156,3 +156,11 @@ def process_webcam_frame(image_b64: str) -> dict:
             image_b64 = image_b64.split(',')[1]
         # Decode base64
         image_bytes = base64.b64decode(image_b64)
+        return {
+            'mime_type': 'image/jpeg',
+            'data': image_bytes,
+            'data_b64': image_b64,
+            'filename': f"webcam_frame_{uuid.uuid4().hex}.jpg",
+            'size': len(image_bytes)
+        }
+    except Exception as e:
