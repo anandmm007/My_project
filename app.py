@@ -151,3 +151,6 @@ generation_config = {
 def process_webcam_frame(image_b64: str) -> dict:
     """Process webcam frame data"""
 try:
+# Remove data URL prefix if present
+        if ',' in image_b64:
+            image_b64 = image_b64.split(',')[1]
