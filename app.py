@@ -102,3 +102,42 @@ def get_gemini_model():
         'gemini-1.5-flash',
         'gemini-1.5-flash-latest',
         'gemini-1.5-pro',
+                'gemini-1.5-pro-latest',
+        'gemini-pro-vision'
+    ]
+    
+    for model_name in models_to_try:
+        try:
+            model = genai.GenerativeModel(model_name)
+            logger.info(f"Using Gemini model: {model_name}")
+            return model
+        except Exception as e:
+            logger.warning(f"Failed to load model {model_name}: {e}")
+            continue
+    
+    raise Exception("No Gemini models available")
+# Initialize model
+try:
+    model = get_gemini_model()
+except Exception as e:
+    logger.error(f"Failed to initialize Gemini model: {e}")
+    model = None
+# Enhanced safety settings
+safety_settings = [
+    {
+        "category": "HARM_CATEGORY_HARASSMENT",
+        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+    },
+    {
+        "category": "HARM_CATEGORY_HATE_SPEECH",
+        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+    },
+    {
+        "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+    },
+    {
+        "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+    }
+]
