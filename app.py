@@ -141,3 +141,4 @@ safety_settings = [
         "threshold": "BLOCK_MEDIUM_AND_ABOVE"
     }
 ]
+# Generation configuration
