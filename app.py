@@ -181,3 +181,4 @@ def health():
     })
 @app.route('/start_chat', methods=['POST'])
 def start_chat():
+    """Handle initial webcam frame and first prompt"""
