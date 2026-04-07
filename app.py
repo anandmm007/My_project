@@ -188,4 +188,6 @@ def start_chat():
                 return jsonify({'error': 'No JSON data provided'}), 400
             image_b64 = data.get('image_b64')
             prompt_text = data.get('prompt', '').strip()
-
+        
+            if not image_b64:
+                return jsonify({'error': 'No webcam frame received'}), 400
