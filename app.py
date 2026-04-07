@@ -168,3 +168,4 @@ def process_webcam_frame(image_b64: str) -> dict:
          raise ValueError("Failed to process webcam frame")
 @app.route('/')
 def index():
+ """Serve the main chat interface"""
