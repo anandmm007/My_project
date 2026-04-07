@@ -189,6 +189,5 @@ def start_chat():
             image_b64 = data.get('image_b64')
             prompt_text = data.get('prompt', '').strip()
         
-        
             if not image_b64:
                 return jsonify({'error': 'No webcam frame received'}), 400
