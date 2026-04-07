@@ -166,3 +166,5 @@ def process_webcam_frame(image_b64: str) -> dict:
     except Exception as e:
          logger.error(f"Error processing webcam frame: {e}")
          raise ValueError("Failed to process webcam frame")
+@app.route('/')
+def index():
