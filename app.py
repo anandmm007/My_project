@@ -206,3 +206,9 @@ def start_chat():
 
         try:
             image_data = process_webcam_frame(image_b64)
+            
+        except ValueError as e:
+            return jsonify({'error': str(e)}), 400
+        
+        # Create session
+        session_id = session_manager.create_session(image_data)
