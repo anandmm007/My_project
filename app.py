@@ -192,3 +192,13 @@ def start_chat():
         
             if not image_b64:
                 return jsonify({'error': 'No webcam frame received'}), 400
+                
+            if not prompt_text:
+            return jsonify({'error': 'Prompt cannot be empty'}), 400
+        
+        if len(prompt_text) > 2000:
+            return jsonify({'error': 'Prompt too long (max 2000 characters)'}), 400
+        
+        # Check model availability
+        if not model:
+            return jsonify({'error': 'AI model not available. Please try again later.'}), 503
