@@ -202,3 +202,7 @@ def start_chat():
         # Check model availability
         if not model:
             return jsonify({'error': 'AI model not available. Please try again later.'}), 503
+        # Process webcam frame
+
+        try:
+            image_data = process_webcam_frame(image_b64)
