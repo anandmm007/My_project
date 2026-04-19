@@ -212,3 +212,8 @@ def start_chat():
         
         # Create session
         session_id = session_manager.create_session(image_data)
+
+        # Prepare message with webcam frame
+
+        user_message = {
+            'role': 'user',
