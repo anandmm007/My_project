@@ -259,3 +259,4 @@ def start_chat():
             })
             
         except Exception as e:
+            logger.error(f"Error generating initial response: {e}")
