@@ -229,3 +229,4 @@ def start_chat():
         }
         
         try:
+            # Generate response
