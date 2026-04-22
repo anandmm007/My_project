@@ -240,3 +240,4 @@ def start_chat():
                 if response.candidates and response.candidates[0].finish_reason:
                     reason = response.candidates[0].finish_reason
                     if reason == "SAFETY":
+                        return jsonify({'error': 'Content blocked due to safety concerns. Please try different content.'}), 400
