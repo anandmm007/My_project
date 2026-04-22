@@ -303,3 +303,4 @@ def chat():
         user_message = {'role': 'user', 'parts': [{'text': prompt_text}]}
         
         try:
+            # Build conversation history
