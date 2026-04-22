@@ -241,3 +241,12 @@ def start_chat():
                     reason = response.candidates[0].finish_reason
                     if reason == "SAFETY":
                         return jsonify({'error': 'Content blocked due to safety concerns. Please try different content.'}), 400
+                    else:
+                        return jsonify({'error': f'Response generation failed: {reason}'}), 500
+                else:
+                    return jsonify({'error': 'No response generated. Please try again.'}), 500
+            
+            model_message = {'role': 'model', 'parts': [{'text': response.text}]}
+            
+            # Update session
+            session_manager.update_session_history(session_id, user_message, model_message)
