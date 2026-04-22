@@ -252,3 +252,10 @@ def start_chat():
             session_manager.update_session_history(session_id, user_message, model_message)
 
             logger.info(f"Started conversation for session {session_id}")
+
+            return jsonify({
+                'session_id': session_id,
+                'response': response.text
+            })
+            
+        except Exception as e:
