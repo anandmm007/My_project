@@ -304,3 +304,5 @@ def chat():
         
         try:
             # Build conversation history
+            conversation_history = []
+            
