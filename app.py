@@ -298,3 +298,8 @@ def chat():
 # Rate limiting
         if session.get('message_count', 0) >= 50:
             return jsonify({'error': 'Message limit reached. Please start a new conversation.'}), 429
+                
+        # Prepare message
+        user_message = {'role': 'user', 'parts': [{'text': prompt_text}]}
+        
+        try:
